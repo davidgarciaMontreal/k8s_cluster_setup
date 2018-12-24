@@ -16,6 +16,7 @@ wget https://download.docker.com/linux/static/stable/x86_64/$docker_version
 tar -zxvf $docker_version
 cp docker/* /usr/bin/
 rm -rf $docker_version
+rm -rf $dir
 popd
 _this=$(dirname $(readlink -f "${BASH_SOURCE[0]}"))
 user=kube
