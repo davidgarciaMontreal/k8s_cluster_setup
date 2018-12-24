@@ -18,13 +18,19 @@ In fact each VM contains two Network Interfaces:
   <img src="./img/master_node_NA_one.png" alt="Network Interface One"
        width="654" height="450">
 </p>
-Clicking on the "Port Forwarding" will show you the following seting for the master node:
+Clicking on the "Port Forwarding" button will show you the following seting for the master node:
 <p align="center">
   <img src="./img/master_node_NA_one_portf.png" alt="Network Interface One Port Forwarding Setting"
        width="654" height="450">
 </p>
 
 2. Internal Network to reach all the nodes
+
+<p align="center">
+  <img src="./img/master_node_NA_two.png" alt="Network Interface Two Port Internal Network k8s_cluster"
+       width="654" height="450">
+</p>
+
 ```bash
 $ VBoxManage dhcpserver add --netname k8s_cluster --ip 10.10.10.1 --netmask 255.255.255.0 --lowerip 10.10.10.2 --upperip 10.10.10.12 --enable
 ```
