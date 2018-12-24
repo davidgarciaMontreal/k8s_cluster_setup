@@ -21,7 +21,7 @@ _this=$(dirname $(readlink -f "${BASH_SOURCE[0]}"))
 user=kube
 cp -f ${_this}/docker.service /etc/systemd/system/
 addgroup --system docker
-adduser $kube docker
+adduser $user docker
 newgrp docker
 systemctl daemon-reload
 systemctl start docker
