@@ -36,7 +36,7 @@ $ VBoxManage dhcpserver add --netname k8s_cluster --ip 10.10.10.1 --netmask 255.
 ```
 ```sh
 $ git clone git@github.com:davidgarciaMontreal/k8s_cluster_setup.git
-$ source k8s_cluster_setup/vms_manage/utils.sh
+$ source k8s_cluster_setup/vms/manage/utils.sh
 ```
 If you want to launch all the vms at once:
 ```sh
