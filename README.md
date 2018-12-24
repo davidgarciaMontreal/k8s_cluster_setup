@@ -15,7 +15,12 @@ These VMs are all connected via an internal network named k8s_internal on the se
 In fact each VM contains two Network Interfaces:
 1. O&M: NAT and setup for SSH (to acces each node)
 <p align="center">
-  <img src="./img/master_node_NA_one.png" alt="Network Interface"
+  <img src="./img/master_node_NA_one.png" alt="Network Interface One"
+       width="654" height="450">
+</p>
+Clicking on the "Port Forwarding" will show you the following seting for the master node:
+<p align="center">
+  <img src="./img/master_node_NA_one_portf.png" alt="Network Interface One Port Forwarding Setting"
        width="654" height="450">
 </p>
 
