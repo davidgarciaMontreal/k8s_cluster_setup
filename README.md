@@ -11,16 +11,21 @@ In the future maybe I will automate these steps. For now, I am just adding a way
 3. slave_node_02
 4. slave_node_03
 
-These VMs are all connected via an internal network k8s_internal on the second interface enp0s8. The command to create the internal is shown below.
+These VMs are all connected via an internal network named k8s_internal on the second network interface enp0s8. The command to create the internal is shown below.
 In fact each VM contains two Network Interfaces:
-1. Nat and seteup for SSH (to acces each node)
+1. O&M: NAT and setup for SSH (to acces each node)
+<p align="center">
+  <img src="./img/master_node_NA_one.png" alt="Network Interface"
+       width="654" height="450">
+</p>
+
 2. Internal Network to reach all the nodes
 ```bash
 $ VBoxManage dhcpserver add --netname k8s_cluster --ip 10.10.10.1 --netmask 255.255.255.0 --lowerip 10.10.10.2 --upperip 10.10.10.12 --enable
 ```
 ```sh
 $ git clone git@github.com:davidgarciaMontreal/k8s_cluster_setup.git
-$ source k8s_cluster_setup/bash_src/bashrc.sh
+$ source k8s_cluster_setup/vms_manage/utils.sh
 ```
 If you want to launch all the vms at once:
 ```sh
