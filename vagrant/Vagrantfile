@@ -68,6 +68,7 @@ Vagrant.configure(2) do |config|
             node.vm.box = machine[:box]
             node.vm.box_version = machine[:box_version]
             node.vm.provision "file", source: "./vms/yum/kubernetes.repo", destination: "/tmp/kubernetes.repo"
+            node.vm.provision "file", source: "./vms/selinux/config", destination: "/tmp/config"
             node.vm.provision :shell, path: "./vms/bootstrap.sh"
             node.vm.hostname = machine[:hostname]
             # Kubernetes Cluster Interface Configuration on eth1
