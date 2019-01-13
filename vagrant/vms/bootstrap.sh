@@ -10,3 +10,5 @@ sudo systemctl restart sshd
 sudo yum install -y docker kubelet kubeadm kubectl kubernetes-cni
 sudo systemctl enable docker && systemctl start docker
 sudo systemctl enable kubelet && systemctl start kubelet
+sudo groupadd docker
+sudo usermod -aG docker vagrant
