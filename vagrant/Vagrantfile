@@ -1,0 +1,87 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+cluster = [
+  {
+    :hostname => "master",
+    :box => "generic/centos7",
+    :box_version => "1.8.54",
+    :ram => 2048,
+    :cpu => 2
+  },
+  {
+    :hostname => "node-01",
+    :box => "generic/centos7",
+    :box_version => "1.8.54",
+    :ram => 1024,
+    :cpu => 2
+  },
+  {
+    :hostname => "node-02",
+    :box => "generic/centos7",
+    :box_version => "1.8.54",
+    :ram => 1024,
+    :cpu => 2
+  },
+  {
+    :hostname => "node-03",
+    :box => "generic/centos7",
+    :box_version => "1.8.54",
+    :ram => 1024,
+    :cpu => 2
+  }
+]
+network = {
+    :mask => "255.255.255.0",
+    :ip => "192.168.50.",
+    :intnet => "k8s-cluster",
+    :proc_mod => "allow-all",
+    :host_port => 14500,
+    :guest_port => 22,
+    :id_label => "SSH O&M"
+}
+
+$ip = network[:ip]
+$port = network[:host_port]
+$ip_initial = 4
+$port_initial = 4
+
+def get_ip
+   the_ip = $ip + $ip_initial.to_s
+   $ip_initial += 1
+   the_ip
+end
+
+def get_port
+   the_port = $port + $port_initial
+   $port_initial += 1
+   the_port
+end
+
+Vagrant.configure(2) do |config|
+    cluster.each do |machine|
+        config.vm.define machine[:hostname] do |node|
+            node.vm.box = machine[:box]
+            node.vm.box_version = machine[:box_version]
+            node.vm.provision "file", source: "./vms/yum/kubernetes.repo", destination: "/tmp/kubernetes.repo"
+            node.vm.provision :shell, path: "./vms/bootstrap.sh"
+            node.vm.hostname = machine[:hostname]
+            # Kubernetes Cluster Interface Configuration on eth1
+            internal_ip = get_ip
+            external_port = get_port
+            node.vm.network "private_network", ip: internal_ip, netmask: network[:mask], virtualbox__intnet: network[:intnet]
+            # O&M Interface Configuration on eth0
+            node.vm.network "forwarded_port", guest: network[:guest_port], host: external_port, id: network[:id_label] 
+            node.vm.provider "virtualbox" do |vb|
+                vb.customize ["modifyvm", :id, "--memory", machine[:ram]]
+                # eth1 maps to nicpromisc2
+                vb.customize ["modifyvm", :id, "--nicpromisc2", network[:proc_mod]]
+            end
+        end
+    end
+end
+
