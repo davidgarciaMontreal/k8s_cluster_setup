@@ -3,15 +3,14 @@
 ## Usage
 
 First, clone this project `thisproject`:
-The prerequisite is that you have 4 VMs preconfigure 1CPU and 1GB RAM and 10GB for storage.
-In the future maybe I will automate these steps. For now, I am just adding a way to easily launch the vms at once.
+The prerequisite is to have virtualbox and vagrant on your system.
 
-1. master_node_00
-2. slave_node_01
-3. slave_node_02
-4. slave_node_03
+1. master
+2. node_01
+3. node_02
+4. node_03
 
-These VMs are all connected via an internal network named k8s_internal on the second network interface enp0s8. The command to create the internal is shown below.
+These VMs are all connected via an internal network named k8s-cluster on the second network interface eth1. The command to create the internal is shown below.
 In fact each VM contains two Network Interfaces:
 1. O&M: NAT and setup for SSH (to acces each node)
 <p align="center">
@@ -27,24 +26,23 @@ Clicking on the "Port Forwarding" button will show you the following seting for 
 2. Internal Network to reach all the nodes
 
 <p align="center">
-  <img src="./img/master_node_NA_two.png" alt="Network Interface Two Port Internal Network k8s_cluster"
+  <img src="./img/master_node_NA_two.png" alt="Network Interface Two Port Internal Network k8s-cluster"
        width="654" height="450">
 </p>
 
-```bash
-$ VBoxManage dhcpserver add --netname k8s_cluster --ip 10.10.10.1 --netmask 255.255.255.0 --lowerip 10.10.10.2 --upperip 10.10.10.12 --enable
-```
 ```sh
 $ git clone git@github.com:davidgarciaMontreal/k8s_cluster_setup.git
-$ source k8s_cluster_setup/vms/manage/utils.sh
+$ cd k8s_cluster_setup/vagrant
+$ vagrant up
+
 ```
-If you want to launch all the vms at once:
+Once the cluster is up you can access them with using the vagrant cli (note: you must under the directory k8s_cluster_setup/vagrant)
 ```sh
-$ launch_cluster up
+$ vagrant ssh master
 ```
-If you want to turn off all the vms at once:
+or node-01 ...
 ```sh
-$ launch_cluster down
+$ vagrant ssh node-01
 ```
 ## License
 
