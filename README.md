@@ -1,5 +1,5 @@
 # k8s_cluster_setup
-## Setup of a small VM cluster so that k8s can be installed and configured from scratch
+## Setup of a small VM cluster so that k8s can be installed and be configured from scratch
 ## Usage
 
 First, clone this project `thisproject`:
