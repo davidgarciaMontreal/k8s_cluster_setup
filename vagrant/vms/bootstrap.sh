@@ -18,3 +18,9 @@ sudo groupadd docker
 sudo usermod -aG docker vagrant
 sudo setenforce 0
 sudo systemctl disable firewalld && sudo systemctl stop firewalld
+sudo service docker restart
+eth1_ip=$(cat /etc/sysconfig/network-scripts/ifcfg-eth1 | grep IPADDR | awk -F"=" '{print $2}')
+echo "KUBELET_EXTRA_ARGS=--node-ip=${eth1_ip}"  > /tmp/conf
+sudo cp /tmp/conf /etc/sysconfig/kubelet
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
