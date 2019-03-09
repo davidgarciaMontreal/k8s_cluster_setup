@@ -31,7 +31,7 @@ Clicking on the "Port Forwarding" button will show you the following seting for 
 </p>
 
 ```sh
-$ git clone git@github.com:davidgarciaMontreal/k8s_cluster_setup.git
+$ git clone https://github.com/davidgarciaMontreal/k8s_cluster_setup.git
 $ cd k8s_cluster_setup/vagrant
 $ vagrant up
 
