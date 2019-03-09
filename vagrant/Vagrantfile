@@ -67,6 +67,13 @@ Vagrant.configure(2) do |config|
         config.vm.define machine[:hostname] do |node|
             node.vm.box = machine[:box]
             node.vm.box_version = machine[:box_version]
+
+            if machine[:hostname] == "master"
+                node.vm.network "forwarded_port", guest: 8001, host: 8001, id: "k8s web console"
+                node.vm.provision "file", source: "./vms/systemd/proxy.service", destination: "/tmp/proxy.service"
+            end
+
+            node.vm.provision "file", source: "../k8s_setup/", destination: "$HOME/k8s_setup"
             node.vm.provision "file", source: "./vms/yum/kubernetes.repo", destination: "/tmp/kubernetes.repo"
             node.vm.provision "file", source: "./vms/selinux/config", destination: "/tmp/config"
             node.vm.provision :shell, path: "./vms/bootstrap.sh"
@@ -76,7 +83,7 @@ Vagrant.configure(2) do |config|
             external_port = get_port
             node.vm.network "private_network", ip: internal_ip, netmask: network[:mask], virtualbox__intnet: network[:intnet]
             # O&M Interface Configuration on eth0
-            node.vm.network "forwarded_port", guest: network[:guest_port], host: external_port, id: network[:id_label] 
+            node.vm.network "forwarded_port", guest: network[:guest_port], host: external_port, id: network[:id_label]
             node.vm.provider "virtualbox" do |vb|
                 vb.customize ["modifyvm", :id, "--memory", machine[:ram]]
                 # eth1 maps to nicpromisc2

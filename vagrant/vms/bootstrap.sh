@@ -14,8 +14,8 @@ sudo systemctl enable kubelet && sudo systemctl start kubelet
 sudo sysctl -w net.bridge.bridge-nf-call-iptables=1
 sudo echo "net.bridge.bridge-nf-call-iptables=1" > /etc/sysctl.d/k8s.conf
 sudo swapoff -a && sudo sed -i '/ swap / s/^/#/' /etc/fstab
-sudo groupadd docker
-sudo usermod -aG docker vagrant
+sudo groupadd docker || true
+sudo usermod -aG docker vagrant || true
 sudo setenforce 0
 sudo systemctl disable firewalld && sudo systemctl stop firewalld
 sudo service docker restart
@@ -24,3 +24,12 @@ echo "KUBELET_EXTRA_ARGS=--node-ip=${eth1_ip}"  > /tmp/conf
 sudo cp /tmp/conf /etc/sysconfig/kubelet
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
+host_name=$(hostname)
+if [[ ${host_name} == "master" ]];then
+    echo "on master"
+    pushd /home/vagrant/k8s_setup &> /dev/null
+    su vagrant -c './centos7/setup.sh'
+
+else
+    echo "on worker"
+fi

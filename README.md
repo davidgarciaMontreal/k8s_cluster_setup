@@ -1,5 +1,4 @@
-# k8s_cluster_setup
-## Setup of a small VM cluster so that k8s can be installed and be configured from scratch
+# Multi-Node k8s Cluster
 ## Usage
 
 First, clone this project `thisproject`:
@@ -41,8 +40,20 @@ Once the cluster is up you can access them with using the vagrant cli (note: you
 $ vagrant ssh master
 ```
 or node-01 ...
+
+To join the cluster use the join command located in the master node  ~/current_config.log
 ```sh
 $ vagrant ssh node-01
+```
+#Generate A Bearer Token for the Web UI
+Once logged in to the master node, generate the following token: 
+```bash
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+```
+#URL on your local env
+Once you have generated the token on the master one, login with your browser to the following url:
+```sh
+http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
 ## License
 

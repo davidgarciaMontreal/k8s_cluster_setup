@@ -1,0 +1,10 @@
+[Unit]
+Description = Enabling k8s Web Console
+After = network.target
+
+[Service]
+ExecStart = /usr/bin/kubectl proxy --address=10.0.2.15 --port=8001
+User = vagrant
+
+[Install]
+WantedBy = multi-user.target
