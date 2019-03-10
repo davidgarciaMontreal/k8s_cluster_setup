@@ -41,7 +41,7 @@ $ vagrant ssh master
 ```
 or node-01 ...
 
-To join the cluster use the join command located in the master node  ~/current_config.log
+To join the cluster use the join command located in the master@~/current_config.log
 ```sh
 $ vagrant ssh node-01
 ```
