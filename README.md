@@ -5,9 +5,9 @@ First, clone this project `thisproject`:
 The prerequisite is to have virtualbox and vagrant on your system.
 
 1. master
-2. node_01
-3. node_02
-4. node_03
+2. node-01
+3. node-02
+4. node-03
 
 These VMs are all connected via an internal network named k8s-cluster on the second network interface eth1. The command to create the internal is shown below.
 In fact each VM contains two Network Interfaces:
