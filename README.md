@@ -45,12 +45,12 @@ To join the cluster use the join command located in the master@~/current_config.
 ```sh
 $ vagrant ssh node-01
 ```
-#Generate A Bearer Token for the Web UI
+# Generate A Bearer Token for the Web UI
 Once logged in to the master node, generate the following token: 
 ```bash
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 ```
-#URL on your local env
+# URL on your local env
 Once you have generated the token on the master one, login with your browser to the following url:
 ```sh
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
