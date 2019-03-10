@@ -30,25 +30,26 @@ Clicking on the "Port Forwarding" button will show you the following seting for 
 </p>
 
 ```sh
-$ git clone https://github.com/davidgarciaMontreal/k8s_cluster_setup.git
-$ cd k8s_cluster_setup/vagrant
-$ vagrant up
+[win|mac] git clone https://github.com/davidgarciaMontreal/k8s_cluster_setup.git
+[win|mac] cd k8s_cluster_setup/vagrant
+[win|mac] vagrant up
 
 ```
 Once the cluster is up you can access them with using the vagrant cli (note: you must under the directory k8s_cluster_setup/vagrant)
 ```sh
-$ vagrant ssh master
+[win/macos] vagrant ssh master
+[vagrant@master ~]$
 ```
 or node-01 ...
 
 To join the cluster use the join command located in the master@~/current_config.log
 ```sh
-$ vagrant ssh node-01
+[win|mac] vagrant ssh node-01
 ```
 # Generate A Bearer Token for the Web UI
 Once logged in to the master node, generate the following token: 
 ```bash
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+[vagrant@master ~]$ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 ```
 # WEB UI URL on your local env
 Once you have generated the token on the master one, login with your browser to the following url:
