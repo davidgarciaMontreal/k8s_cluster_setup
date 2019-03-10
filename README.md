@@ -45,6 +45,7 @@ or node-01 ...
 To join the cluster use the join command located in the master@~/current_config.log
 ```sh
 [win|mac] vagrant ssh node-01
+[vagrant@node-01 ~]$sudo kubeadm join 192.168.50.4:6443 --token uqv9vx.5pehqn6c172o900s --discovery-token-ca-cert-hash sha256:650d838c0f74b2510945241007e728f601e225d9637ed4947f35ccfe20abc544
 ```
 # Generate A Bearer Token for the Web UI
 Once logged in to the master node, generate the following token: 
