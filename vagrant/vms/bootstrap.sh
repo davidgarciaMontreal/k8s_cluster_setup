@@ -28,6 +28,7 @@ host_name=$(hostname)
 if [[ ${host_name} == "master" ]];then
     echo "on master"
     pushd /home/vagrant/k8s_setup &> /dev/null
+    chmod 777 ./centos7/setup.sh
     su vagrant -c './centos7/setup.sh'
 
 else
