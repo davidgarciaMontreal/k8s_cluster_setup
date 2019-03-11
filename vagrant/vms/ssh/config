@@ -1,0 +1,6 @@
+#chmod 0600 ~/.ssh/config
+Host master
+    HostName 127.0.0.1
+    RemoteForward 52698 localhost:52698
+    User vagrant
+    Port 14504
