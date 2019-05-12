@@ -24,6 +24,8 @@ echo "KUBELET_EXTRA_ARGS=--node-ip=${eth1_ip}"  > /tmp/conf
 sudo cp /tmp/conf /etc/sysconfig/kubelet
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
+sudo wget -O /usr/local/bin/rsub \https://raw.github.com/aurora/rmate/master/rmate
+sudo chmod a+x /usr/local/bin/rsub
 host_name=$(hostname)
 if [[ ${host_name} == "master" ]];then
     echo "on master"

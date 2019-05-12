@@ -1,0 +1,71 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+cluster = [
+    {
+        :hostname => "t-master",
+        :box => "generic/centos7",
+        :box_version => "1.8.54",
+        :ram => 2048,
+        :cpu => 2,
+        :guest_port => 14508,
+        :ip => "192.168.50.8"
+    },
+    {
+        :hostname => "t-node-01",
+        :box => "generic/centos7",
+        :box_version => "1.8.54",
+        :ram => 1024,
+        :cpu => 2,
+        :guest_port => 14509,
+        :ip => "192.168.50.9"
+    }
+
+]
+network = {
+    :mask => "255.255.255.0",
+    :ip => "192.168.50.",
+    :guest_port => 22,
+    :intnet => "t-k8s-cluster",
+    :proc_mod => "allow-all",
+    :id_label => "SSH O&M"
+}
+
+Vagrant.configure(2) do |config|
+  cluster.each do |current_node|
+    config.vm.define current_node[:hostname] do |node|
+      node.vm.box = current_node[:box]
+      node.vm.box_version = current_node[:box_version]
+
+      if current_node[:hostname] == "t-master"
+        node.vm.network "forwarded_port", guest: 8001, host: 8002, id: "k8s web console"
+        node.vm.provision "file", source: "../vagrant/vms/systemd/proxy.service", destination: "/tmp/proxy.service"
+      end
+
+      node.vm.provision "file", source: "../k8s_setup/", destination: "$HOME/k8s_setup"
+      node.vm.provision "file", source: "../vagrant/vms/yum/kubernetes.repo", destination: "/tmp/kubernetes.repo"
+      node.vm.provision "file", source: "../vagrant/vms/selinux/config", destination: "/tmp/config"
+      node.vm.provision :shell, path: "../vagrant/vms/bootstrap.sh"
+      node.vm.hostname = current_node[:hostname]
+      # Kubernetes Cluster Interface Configuration on eth1
+      internal_ip = current_node[:ip]
+      host_port = current_node[:guest_port]
+      node.vm.network "private_network", ip: internal_ip, netmask: network[:mask], virtualbox__intnet: network[:intnet]
+      # O&M Interface Configuration on eth0
+      node.vm.network "forwarded_port", guest: network[:guest_port], host: host_port, id: network[:id_label]
+      node.vm.network "public_network"
+      node.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--memory", current_node[:ram]]
+        # eth1 maps to nicpromisc2
+        vb.customize ["modifyvm", :id, "--nicpromisc2", network[:proc_mod]]
+        vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+        vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+      end
+    end
+  end
+end
+
