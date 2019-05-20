@@ -1,0 +1,40 @@
+version: 0.1
+log:
+  level: debug
+  fields:
+    service: registry
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /var/lib/registry
+http:
+  addr: :5000
+  headers:
+    X-Content-Type-Options: [nosniff]
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+redis:
+  addr: localhost:6379
+  password: asecret
+  db: 0
+  dialtimeout: 10ms
+  readtimeout: 10ms
+  writetimeout: 10ms
+  pool:
+    maxidle: 16
+    maxactive: 64
+    idletimeout: 300s
+notifications:
+  endpoints:
+    - name: alistener
+      disabled: false
+      url: http://localhost:9000/
+      headers:
+          X-Content-Type-Options: [nosniff]
+      timeout: 1s
+      threshold: 1
+      backoff: 5s
