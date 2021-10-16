@@ -11,7 +11,7 @@ cluster = [
     :box => "generic/centos7",
     :box_version => "1.8.54",
     :ram => 2048,
-    :cpu => 2,
+    :cpu => 3,
     :guest_port => 14504,
     :ip => "192.168.50.4"
   },
