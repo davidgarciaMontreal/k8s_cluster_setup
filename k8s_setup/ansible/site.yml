@@ -1,0 +1,25 @@
+  - name: Play app - Create tomcat directories and username in app servers
+    hosts: "{{servers}}"
+    become: yes
+    become_user: root
+    tasks:
+      - name: Sample Command
+        shell: whoami
+        args:
+          executable: /bin/bash
+        register: result
+      - debug:
+          var: result
+      - name: Copy Key and Certificate
+        copy:
+          src: /opt/certs/
+          dest: /opt/certs/
+          directory_mode: yes
+      - name: Create Registry Directory
+        file:
+          path: /opt/registry
+          state: directory
+      - name: Transfer the script
+        copy: src=s.sh dest=/tmp mode=0777
+      - name: Execute the script
+        command: sh /tmp/s.sh
